@@ -3,14 +3,19 @@ import { useAppDispatch, useAppSelector } from "../../../hooks";
 
 import DateIntervalEicView from "..";
 import TextField from "@mui/material/TextField";
+import aiclist from "../../../mock/aiclist.json";
 import format from "date-fns/format";
 import { setDateIntervalEicParams } from "../../../store/paramSlice";
-import { useLazyGetAic } from "../../../services/api-service/reportEndpoints";
 
 const Aic = () => {
   const dispatch = useAppDispatch();
   const params = useAppSelector((state) => state.param.aic);
-  const [getAic, { isLoading, isFetching }] = useLazyGetAic();
+  let isFetching = false;
+  const [isLoading, setIsLoading] = useState(false);
+
+  const getAic = () => {
+    return aiclist as CapacityValues[];
+  };
 
   const [uevcbEIC, setUevcbEIC] = useState<string>(params.uevcbEIC);
   const [startDate, setStartDate] = useState<Date | null>(
@@ -18,7 +23,7 @@ const Aic = () => {
   );
   const [endDate, setEndDate] = useState<Date | null>(new Date(params.endDate));
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     startDate &&
       endDate &&
@@ -32,6 +37,9 @@ const Aic = () => {
           },
         })
       );
+    setIsLoading(true);
+    await new Promise((_: any) => setTimeout(_, 1000));
+    setIsLoading(false);
   };
 
   return (

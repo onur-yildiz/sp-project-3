@@ -9,28 +9,26 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { setUser } from "../../store/authSlice";
 import { useAppDispatch } from "../../hooks";
-import { useLoginMutation } from "../../services/api-service/authEndpoints";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const [login, { isLoading }] = useLoginMutation();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const data = new FormData(e.currentTarget);
-    const credentials = {
-      username: data.get("username")?.toString(),
-      password: data.get("password")?.toString(),
-    } as LoginCredentials;
+    // const data = new FormData(e.currentTarget);
+    // const credentials = {
+    //   username: data.get("username")?.toString(),
+    //   password: data.get("password")?.toString(),
+    // } as LoginCredentials;
 
-    if (!credentials.username || !credentials.password) return;
+    // if (!credentials.username || !credentials.password) return;
 
     try {
-      const user = await login(credentials).unwrap();
-      dispatch(setUser(user));
+      // const user = await login(credentials).unwrap();
+      dispatch(setUser());
       navigate("/");
     } catch (error) {
       console.error(error);
@@ -75,7 +73,7 @@ const Login = () => {
             autoComplete="current-password"
           />
           <LoadingButton
-            loading={isLoading}
+            // loading={isLoading}
             type="submit"
             fullWidth
             variant="contained"

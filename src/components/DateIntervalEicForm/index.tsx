@@ -4,7 +4,7 @@ import CustomMuiGrid from "../CustomMuiGrid";
 import DateIntervalInput from "../DateIntervalInput";
 import { DatePickerProps } from "@mui/x-date-pickers/DatePicker";
 import TextField from "@mui/material/TextField";
-import { useGetInjectionUnit } from "../../services/api-service/reportEndpoints";
+import iuns from "../../mock/injection-units.json";
 
 export interface DateIntervalEicFormProps {
   startDateProps: DatePickerProps<Date | null>;
@@ -20,7 +20,6 @@ export interface DateIntervalEicFormProps {
 const DateIntervalEicForm = (props: DateIntervalEicFormProps) => {
   const { startDateProps, endDateProps, onSubmit, onEicChange, eicValue } =
     props;
-  const { data: injectionUnits } = useGetInjectionUnit();
 
   return (
     <CustomMuiGrid component="form" variant="large" onSubmit={onSubmit}>
@@ -35,13 +34,13 @@ const DateIntervalEicForm = (props: DateIntervalEicFormProps) => {
         />
       </CustomMuiGrid>
       <CustomMuiGrid disablePaper variant="large" direction="row">
-        {injectionUnits && (
+        {iuns && (
           <Autocomplete
             sx={{ flexGrow: 1 }}
             disablePortal
             id="dpp-iun-select"
-            value={injectionUnits.find((iun) => iun.eic === eicValue)}
-            options={injectionUnits}
+            value={iuns.find((iun) => iun.eic === eicValue)}
+            options={iuns}
             getOptionLabel={(option) => `${option.name} (${option.eic})`}
             onChange={onEicChange}
             renderInput={(params) => (

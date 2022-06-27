@@ -6,9 +6,7 @@ import { useEffect, useState } from "react";
 import Container from "@mui/material/Container";
 import CustomAgGridTable from "../CustomAgGridTable";
 import CustomMuiGrid from "../CustomMuiGrid";
-import { LazyQueryTrigger } from "@reduxjs/toolkit/dist/query/react/buildHooks";
 import LineChart from "../charts/LineChart";
-import { QueryDefinition } from "@reduxjs/toolkit/dist/query/endpointDefinitions";
 import Stack from "@mui/material/Stack";
 import dateIntervalEicConfig from "../../config/charts/date-interval-eic-config";
 import { format } from "date-fns";
@@ -17,9 +15,7 @@ interface DateIntervalEicChartViewProps {
   title: string;
   params: DateIntervalEicParams;
   isLoading: boolean;
-  fetcher: LazyQueryTrigger<
-    QueryDefinition<DateIntervalEicParams, any, any, CapacityValues[], any>
-  >;
+  fetcher: () => CapacityValues[];
   formProps: DateIntervalEicFormProps;
 }
 
@@ -34,16 +30,7 @@ const DateIntervalEicView = (props: DateIntervalEicChartViewProps) => {
 
     const fetchData = async () => {
       try {
-        const newData = await fetcher(
-          {
-            startDate,
-            endDate,
-            uevcbEIC,
-          },
-          true
-        ).unwrap();
-
-        setData(newData);
+        setData(fetcher());
       } catch (error) {
         console.error(error);
       }

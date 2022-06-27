@@ -17,15 +17,17 @@ import TextField from "@mui/material/TextField";
 import Toolbar from "@mui/material/Toolbar";
 import dateIntervalEicConfig from "../../config/charts/date-interval-eic-config";
 import { format } from "date-fns";
+import santral from "../../mock/santral.json";
 import { setDateIntervalEicParams } from "../../store/paramSlice";
-import { useLazyGetSantral } from "../../services/api-service/reportEndpoints";
 
 const PowerPlantView = () => {
   const dppConfig = dateIntervalEicConfig();
   const aicConfig = dateIntervalEicConfig();
   const dispatch = useAppDispatch();
   const params = useAppSelector((state) => state.param.pps);
-  const [getSantral, { isLoading, isFetching }] = useLazyGetSantral();
+  let isFetching = false;
+  const [isLoading, setIsLoading] = useState(false);
+
   const [data, setData] = useState<SantralResponse>();
 
   const [tabValue, setTabValue] = useState("dpp");
@@ -39,7 +41,7 @@ const PowerPlantView = () => {
     setTabValue(newValue);
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     startDate &&
       endDate &&
@@ -53,6 +55,9 @@ const PowerPlantView = () => {
           },
         })
       );
+    setIsLoading(true);
+    await new Promise((_: any) => setTimeout(_, 1000));
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -60,16 +65,14 @@ const PowerPlantView = () => {
 
     const fetchData = async () => {
       try {
-        const newData = await getSantral(params, true).unwrap();
-
-        setData(newData);
+        setData(santral as SantralResponse);
       } catch (error) {
         console.error(error);
       }
     };
 
     fetchData();
-  }, [getSantral, params]);
+  }, [params]);
 
   aicConfig.chartOptions.plugins!.title!.text =
     "Available Installed Capacity Total";

@@ -11,35 +11,33 @@ import Typography from "@mui/material/Typography";
 import { setUser } from "../../store/authSlice";
 import { useAppDispatch } from "../../hooks";
 import { useNavigate } from "react-router-dom";
-import { useRegisterMutation } from "../../services/api-service/authEndpoints";
 
 const Register = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [register, { isLoading }] = useRegisterMutation();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const data = new FormData(e.currentTarget);
-    const credentials = {
-      username: data.get("username"),
-      password: data.get("password"),
-      firstName: data.get("first-name"),
-      lastName: data.get("last-name"),
-    } as RegisterCredentials;
-    if (
-      !credentials.username ||
-      !credentials.password ||
-      !credentials.firstName ||
-      !credentials.lastName
-    ) {
-      return;
-    }
+    // const data = new FormData(e.currentTarget);
+    // const credentials = {
+    //   username: data.get("username"),
+    //   password: data.get("password"),
+    //   firstName: data.get("first-name"),
+    //   lastName: data.get("last-name"),
+    // } as RegisterCredentials;
+    // if (
+    //   !credentials.username ||
+    //   !credentials.password ||
+    //   !credentials.firstName ||
+    //   !credentials.lastName
+    // ) {
+    //   return;
+    // }
 
     try {
-      const user = await register(credentials).unwrap();
+      // const user = await register(credentials).unwrap();
 
-      dispatch(setUser(user));
+      dispatch(setUser());
       navigate("/");
     } catch (error) {
       console.error(error);
@@ -108,7 +106,7 @@ const Register = () => {
             </Grid>
           </Grid>
           <LoadingButton
-            loading={isLoading}
+            // loading={isLoading}
             type="submit"
             fullWidth
             variant="contained"

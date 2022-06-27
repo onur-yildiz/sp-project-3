@@ -3,9 +3,10 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Reports from "./pages/Reports";
+import { useAppSelector } from "./hooks";
 
 function App() {
-  const isAuth = doesHttpOnlyCookieExist("jwt");
+  const isAuth = useAppSelector((state) => state.auth.isAuthenticated);
 
   return (
     <Routes>
@@ -19,9 +20,9 @@ function App() {
   );
 }
 
-const doesHttpOnlyCookieExist = (cookieName: string) => {
-  document.cookie = cookieName + "=;";
-  return document.cookie.indexOf(cookieName + "=") === -1;
-};
+// const doesHttpOnlyCookieExist = (cookieName: string) => {
+//   document.cookie = cookieName + "=;";
+//   return document.cookie.indexOf(cookieName + "=") === -1;
+// };
 
 export default App;

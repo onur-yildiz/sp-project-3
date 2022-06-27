@@ -1,7 +1,4 @@
-import {
-  useGetDppOrganizations,
-  useGetInjectionUnit,
-} from "../../services/api-service/reportEndpoints";
+import { useAppDispatch, useAppSelector } from "../../hooks";
 
 import Aic from "../../components/DateIntervalEicView/Aic";
 import AppBar from "@mui/material/AppBar";
@@ -18,25 +15,24 @@ import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { useAppSelector } from "../../hooks";
-import { useLogoutMutation } from "../../services/api-service/authEndpoints";
+import iuns from "../../mock/injection-units.json";
+import { logout } from "../../store/authSlice";
+import orgs from "../../mock/organizations.json";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 const Reports = () => {
+  const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.auth.user);
   const navigate = useNavigate();
-  const [logout] = useLogoutMutation();
   const [tabValue, setTabValue] = useState("dpp");
-  const { data: orgs } = useGetDppOrganizations();
-  const { data: iuns } = useGetInjectionUnit();
 
   const handleTabChange = (_: any, newValue: string) => {
     setTabValue(newValue);
   };
 
   const handleLogout = async () => {
-    await logout().unwrap();
+    dispatch(logout());
     navigate("/login");
   };
 
@@ -75,10 +71,18 @@ const Reports = () => {
           <PowerPlantView />
         </TabPanel>
         <TabPanel value="orgs">
-          {orgs ? <CustomAgGridTable data={orgs} /> : <LoadingPage />}
+          {orgs ? (
+            <CustomAgGridTable data={orgs as DppOrganization[]} />
+          ) : (
+            <LoadingPage />
+          )}
         </TabPanel>
         <TabPanel value="iun">
-          {iuns ? <CustomAgGridTable data={iuns} /> : <LoadingPage />}
+          {iuns ? (
+            <CustomAgGridTable data={iuns as InjectionUnit[]} />
+          ) : (
+            <LoadingPage />
+          )}
         </TabPanel>
       </TabContext>
     </Box>

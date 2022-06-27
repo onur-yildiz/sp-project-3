@@ -1,4 +1,3 @@
-import api from "../services/api-service";
 import authReducer from "./authSlice";
 import { configureStore } from "@reduxjs/toolkit";
 import paramReducer from "./paramSlice";
@@ -7,10 +6,7 @@ const store = configureStore({
   reducer: {
     auth: authReducer,
     param: paramReducer,
-    [api.reducerPath]: api.reducer,
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(api.middleware),
 });
 
 // optional, but required for refetchOnFocus/refetchOnReconnect behaviors
