@@ -39,7 +39,7 @@ const DateIntervalEicForm = (props: DateIntervalEicFormProps) => {
             sx={{ flexGrow: 1 }}
             disablePortal
             id="dpp-iun-select"
-            value={iuns.find((iun) => iun.eic === eicValue)}
+            value={iuns.find((iun) => iun.eic === eicValue) ?? iuns[0]}
             options={iuns}
             getOptionLabel={(option) => `${option.name} (${option.eic})`}
             onChange={onEicChange}
