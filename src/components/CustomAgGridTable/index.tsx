@@ -13,11 +13,13 @@ interface DateIntervalEicTableProps {
 }
 
 const CustomAgGridTable = (props: DateIntervalEicTableProps) => {
+  const propNames = Object.getOwnPropertyNames(props.data[0]);
   const [columnDefs] = useState<ColDef[]>(
-    Object.getOwnPropertyNames(props.data[0]).map((prop) => ({
+    propNames.map((prop, i) => ({
       field: prop,
       resizable: true,
-      flex: 1,
+      minWidth: 120,
+      flex: propNames.length - 1 === i ? 1 : 0,
     }))
   );
 
