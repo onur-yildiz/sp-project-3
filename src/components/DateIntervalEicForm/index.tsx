@@ -20,7 +20,7 @@ export interface DateIntervalEicFormProps {
 const DateIntervalEicForm = (props: DateIntervalEicFormProps) => {
   const { startDateProps, endDateProps, onSubmit, onEicChange, eicValue } =
     props;
-  const { data: injectionUnits } = useGetInjectionUnit();
+  const { data: injectionUnits, isLoading } = useGetInjectionUnit();
 
   return (
     <CustomMuiGrid component="form" variant="large" onSubmit={onSubmit}>
@@ -40,8 +40,12 @@ const DateIntervalEicForm = (props: DateIntervalEicFormProps) => {
             sx={{ flexGrow: 1 }}
             disablePortal
             id="dpp-iun-select"
-            value={injectionUnits.find((iun) => iun.eic === eicValue)}
+            value={
+              injectionUnits.find((iun) => iun.eic === eicValue) ??
+              injectionUnits[0]
+            }
             options={injectionUnits}
+            loading={isLoading}
             getOptionLabel={(option) => `${option.name} (${option.eic})`}
             onChange={onEicChange}
             renderInput={(params) => (
