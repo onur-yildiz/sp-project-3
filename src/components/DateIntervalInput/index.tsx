@@ -3,6 +3,7 @@ import { FC, Fragment } from "react";
 
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { startOfDay } from "date-fns";
 
 interface DateIntervalInputProps {
   startDateProps: DatePickerProps<Date | null>;
@@ -20,7 +21,9 @@ const DateIntervalInput: FC<DateIntervalInputProps> = (
           label="Start Date"
           disableFuture
           shouldDisableDate={(date) =>
-            !endDateProps.value || !date || date > endDateProps.value
+            !endDateProps.value ||
+            !date ||
+            startOfDay(date) > endDateProps.value
           }
           {...startDateProps}
         />
