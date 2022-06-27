@@ -1,26 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Navigate, Route, Routes } from "react-router-dom";
+
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Reports from "./pages/Reports";
 
 function App() {
+  const isAuth = doesHttpOnlyCookieExist("jwt");
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+      <Route
+        path=""
+        element={isAuth ? <Reports /> : <Navigate to="login" replace />}
+      />
+      <Route path="login" element={<Login />} />
+      <Route path="register" element={<Register />} />
+    </Routes>
   );
 }
+
+const doesHttpOnlyCookieExist = (cookieName: string) => {
+  document.cookie = cookieName + "=;";
+  return document.cookie.indexOf(cookieName + "=") === -1;
+};
 
 export default App;
